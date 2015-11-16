@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/stylesheets/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="/stylesheets/flat-ui.css" rel="stylesheet">
+	<link href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css" rel="stylesheet" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+          <nav class="navbar navbar-inverse navbar-embossed navbar-fixed-top" role="navigation"" style="width: 100%">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+              </button>
+              <a class="navbar-brand" href="#">Sequelize Demo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+              <ul class="nav navbar-nav navbar-left">
+                
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Funders <b class="caret"></b></a>
+                  <span class="dropdown-arrow"></span>
+                  <ul class="dropdown-menu">
+                    <li><a href="/add_funders">Add</a></li>
+                    <li><a href="/view_funders">List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">DOI <b class="caret"></b></a>
+                  <span class="dropdown-arrow"></span>
+                  <ul class="dropdown-menu">
+                    <li><a href="/add_dois">Add</a></li>
+                    <li><a href="/view_dois">List</a></li>
+                    <li><a href="/associate_funders">Associate Funders</a></li>
+                  </ul>
+                </li>
+               </ul>
+               
+            </div><!-- /.navbar-collapse -->
+          </nav><!-- /navbar -->
+        
+        
+        <div class="container">
+        	
+			<form class="form col-xs-offset-3 col-xs-6" role="form" action="/associate_funders" method="POST">
+				 <h4>Associate Funder</h4>
+         
+            <div class="col-xs-12">
+              <%if(locals.message){%>
+                <p><%=message%></p>
+              <%}%>
+            </div>
+			   
+            <div class="col-xs-12">
+              <label for="DOI">DOI: </label>
+              <div class="form-group">
+                <input type="text" id="select_doi" value="<%if(locals.DOI){%><%=DOI%><%}%>" placeholder="DOI" name="DOI" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-12">
+              <label for="funderId"> Funder ID: </label>
+              <div class="form-group">
+                <input type="text" id="select_funderid" value="" placeholder="Funder ID" name="funderId" class="form-control" />
+              </div>
+            </div>	
+            
+            <div class="col-xs-12">
+              <label for="funderId"> Funder Name: </label>
+              <div class="form-group">
+                <input type="text" value="" id="funder_name" placeholder="Funder Name" name="name" class="form-control" disabled/>
+              </div>
+            </div>
+            
+            <div class="col-xs-12">
+              <label for="funderId"> Award: </label>
+              <div class="form-group">
+                <input type="text" value="" placeholder="Award" name="award" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-12">
+              <label for="funderId"> Funder DOI: </label>
+              <div class="form-group">
+                <input type="text" value="" placeholder="Funder DOI" name="funderDOI" class="form-control" />
+              </div>
+            </div>
+            
+            <center><button type="submit" class="btn btn-primary">Submit</button></center>
+			
+			</form>
+			    
+        </div>
+    
+    <script src="/javascripts/vendor/jquery.min.js"></script>
+    <script src="/javascripts/vendor/video.js"></script>
+    <script src="/javascripts/flat-ui.min.js"></script>
+	  <script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.js"></script>
+    
+    <script type="text/javascript">
+      var funders = [];
+      $(document).ready(function() {
+        
+        var $select = $('#select_doi').selectize({
+          maxItems: 1,
+          preload: true,
+          valueField: 'DOI',
+          labelField: 'DOI',
+          searchField: ['DOI'],
+          render: {
+              option: function (item, escape) {
+                  return '<div>' + escape(item['DOI']) + '</div>';
+              }
+          },
+          load: function (query, callback) {
+
+              $.ajax({
+                  url: '/get_dois?query=' + query,
+                  type: 'GET',
+                  dataType: 'json',
+                  error: function () {
+                    return callback();
+                  },
+                  success: function (res) {
+                    console.log(res);
+                    return callback(res);
+                  }
+              });
+          }
+        });
+        
+        var $selectFunder = $('#select_funderid').selectize({
+          maxItems: 1,
+          preload: true,
+          valueField: 'funderId',
+          labelField: 'funderId',
+          searchField: ['funderName', 'funderId'],
+          render: {
+              option: function (item, escape) {
+                  return '<div data-name=' + item['funderName'] + '>' + escape(item['funderId']) + ' - ' + escape(item['funderName']) +  '</div>';
+              }
+          },
+          load: function (query, callback) {
+
+              $.ajax({
+                  url: '/get_funders?query=' + query,
+                  type: 'GET',
+                  dataType: 'json',
+                  error: function () {
+                    return callback();
+                  },
+                  success: function (res) {
+                    funders = res;
+                    return callback(res);
+                  }
+              });
+          },
+          onItemAdd: function(value, $item) {
+            for(var i = 0 ; i < funders.length; i++) {
+              if(funders[i].funderId == value) {
+                $('#funder_name').val(funders[i].funderName);
+                break;
+              } 
+            }            
+          }         
+        });      
+      });
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/stylesheets/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="/stylesheets/flat-ui.css" rel="stylesheet">
+    <link rel='/stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    
+          <nav class="navbar navbar-inverse navbar-embossed navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+              </button>
+              <a class="navbar-brand" href="#">Sequelize Demo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+              <ul class="nav navbar-nav navbar-left">
+                
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Funders <b class="caret"></b></a>
+                  <span class="dropdown-arrow"></span>
+                  <ul class="dropdown-menu">
+                    <li><a href="/add_funders">Add</a></li>
+                    <li><a href="/view_funders">List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">DOI <b class="caret"></b></a>
+                  <span class="dropdown-arrow"></span>
+                  <ul class="dropdown-menu">
+                    <li><a href="/add_dois">Add</a></li>
+                    <li><a href="/view_dois">List</a></li>
+                    <li><a href="/associate_funders">Associate Funder</a></li>
+                  </ul>
+                </li>
+               </ul>
+               
+            </div><!-- /.navbar-collapse -->
+          </nav><!-- /navbar -->
+        
+        <div class="container">
+          
+          
+          <form class="form" method="POST" action="<%if(locals.doi){%> /edit_dois/<%=doi.DOI%> <% }else {%>/dois<%}%>">
+          
+           <center><h4>Add DOI</h4></center>
+          
+           <div class="col-xs-3">
+              <label for="DOI">DOI:</label>
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.DOI%><% }%>" placeholder="DOI" name="DOI" class="form-control" />
+              </div>
+            </div>
+           
+            <div class="col-xs-3">
+            <label for="ISSN">ISSN:</label>
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.ISSN%><% }%>" placeholder="ISSN" name="ISSN" class="form-control" />
+              </div>
+            </div>
+           
+            <div class="col-xs-3">
+              <label for="URL">URL:</label>
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.URL%><% }%>" placeholder="URL" name="URL" class="form-control" />
+                
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="issue">Issue:</label>
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.issue%><% }%>" placeholder="Issue" name="issue" class="form-control" />
+                
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="issueDate">Issue Date:</label>
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.issueDate%><% }%>" name="issueDate" placeholder="Issue Date"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="currentDate">Current Date:</label>            
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.currentDate%><% }%>" name="currentDate" placeholder="Current Date"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="depositedDate">Deposited Date:</label>            
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.depositedDate%><% }%>" name="depositedDate" placeholder="Deposited Date" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="indexedDate">Indexed Date:</label>              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.indexedDate%><% }%>" placeholder="Indexed Date" name="indexedDate" class="form-control" />
+              </div>
+            </div>
+           
+           <div class="col-xs-3">
+              <label for="title">Title:</label>           
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.title%><% }%>" name="title" placeholder="Title"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="subtitle">Sub Title:</label>            
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.subtitle%><% }%>" name="subtitle" placeholder="Subtitle"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="type">Type:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.type%><% }%>" name="type" placeholder="Type" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              
+              <label for="journalName">Journal Name:</label>
+                          
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.journalName%><% }%>" placeholder="Journal Name" name="journalName" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="volume">Volume:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.volume%><% }%>" name="volume" placeholder="Volume"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="member">Member:</label>              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.member%><% }%>" name="member" placeholder="Member"  class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="page">Page:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.page%><% }%>" name="page" placeholder="Page" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="prefix">Prefix:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.prefix%><% }%>" placeholder="Prefix" name="prefix" class="form-control" />
+              </div>
+            </div>
+            
+             <div class="col-xs-3"
+              <label for="updateDate">Update Date:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.updateDate%><% }%>" name="updateDate" placeholder="Update Date" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="col-xs-3">
+              <label for="publicationDate">Publication Date:</label>
+              
+              <div class="form-group">
+                <input type="text" value="<%if(locals.doi){%><%=doi.publicationDate%><% }%>" placeholder="Publication Date" name="publicationDate" class="form-control" />
+              </div>
+            </div>
+             
+            <div class="col-xs-6">
+              <div class="form-group">
+                
+              </div>
+            </div>
+          
+            <div class="col-xs-12">
+              <center><button class="btn btn-success" type="submit">Submit</button></center>
+            </div>
+          </form>
+       </div>
+    <script src="/javascripts/vendor/jquery.min.js"></script>
+    <script src="/javascripts/vendor/video.js"></script>
+    <script src="/javascripts/flat-ui.min.js"></script>
+  </body>
+</html>
